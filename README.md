@@ -1,176 +1,144 @@
-# Configuración del entorno de desarrollo para Programación 2
-
-Vamos a comentar cómo instalar todos los componentes necesarios sobre la máquina host.
-
-## Instalar NodeJs
-
-1. Ingresar a [NodeJs - Descargas](https://nodejs.org/en/download/) y seleccionar según la plataforma en la que nos encontremos el instalador que mejor se adapte a nuestro sistema operativo.
-
-👉 En el caso de Windows, seleccionar los instaladores que se encuentran en la pestaña "Prebuilt Installer"
-
-
-
-👉 En el caso de MacOs o Linux, seleccionar la pestaña "Package Manager" y seleccionar "NVM" en el último combo. Luego copiar y ejecutar en una terminal los comandos que se muestran.
-
-
-
-⚠️ **En todos los casos seleccionar alguna versión estable (LTS)**
-
-## Directorio de trabajo
-
-Una vez instalado node, debemos crear el directorio en el cual vamos a desarrollar.
-Crear un directorio, que será el directorio del proyecto a utilizar y dentro del mismo descomprimir el archivo 📦 *bootstrap.zip*.
-
-Este archivo contiene lo siguiente:
-
-📂/
-
-- 📂 src: directorio donde crearemos todos los archivos typescript (\*.ts)
-  - 📄 index.ts: archivo de prueba. A futuro será nuestro punto de entrada.
-- 📂 tests: directorio donde crearemos las pruebas unitarias 
-- 📄 package.json: este archivo contiene los comandos a utilizar en el desarrollo y los paquetes necesarios para construir nuestra solución.
-- 📄 tsconfig.json: este archivo contiene la configuración utilizada en el proceso de "compilación"
-- 📄 jest.config.js: este archivo contiene la configuración utilizada durante la ejecución de las pruebas unitarias.
-- 📄 README.md: este archivo.
-
-## Instalar las dependencias
-
-Desde una terminal, ingresar al directorio de trabajo creado y ejecutar el siguiente comando: 
-
-```bash
-# comando que permite instalar los paquetes especificados en el archivo package.json
-user@host:~$ npm i
-```
-
-## Compilar el proyecto
-
-Desde una terminal, ingresar al directorio de trabajo creado y ejecutar el siguiente comando: 
-
-```bash
-# comando que permite compilar la solución.
-user@host:~$ npm run build
-```
-
-## Configurar VisualCode (IDE)
-
-Instalar los siguientes complementos:
-
-* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
-* [JEST](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
-* [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
-* [Test Adapter Converter](https://marketplace.visualstudio.com/items?itemName=ms-vscode.test-adapter-converter)
-* [Test Explorer UI](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-test-explorer)
-
-# Reglas de estilo de código (ESLint)
-
-El proyecto incluye una configuración de ESLint (`eslint.config.js`) que estandariza el código. Para verificarla ejecutar:
-
-```bash
-# revisa el código en src/ y reporta errores
-user@host:~$ npm run lint
-
-# revisa el código y corrige automáticamente lo que se pueda
-user@host:~$ npm run lint-fix
-```
-
-A continuación se muestran ejemplos de cada regla configurada.
-
-## Nombres de clases, interfaces y tipos (PascalCase)
-
-| ❌ Incorrecto        | ✅ Correcto          |
-| ------------------- | ------------------- |
-| `class persona { }` | `class Persona { }` |
-
-## Nombres de constantes globales (UPPER_CASE)
-
-| ❌ Incorrecto             | ✅ Correcto                |
-| ------------------------ | ------------------------- |
-| `const maxIntentos = 3;` | `const MAX_INTENTOS = 3;` |
-
-## Nombres de variables y funciones (camelCase)
-
-| ❌ Incorrecto                  | ✅ Correcto                   |
-| ----------------------------- | ---------------------------- |
-| `let Nombre_Usuario = "Ana";` | `let nombreUsuario = "Ana";` |
-
-## Nombres de métodos de clase (camelCase)
-
-| ❌ Incorrecto                 | ✅ Correcto                   |
-| ---------------------------- | ---------------------------- |
-| `public Saludar(): void { }` | `public saludar(): void { }` |
-
-## Longitud mínima de los nombres (mínimo 4 caracteres)
-
-Se exceptúan los contadores de bucles `i`, `j` y `k`.
-
-| ❌ Incorrecto    | ✅ Correcto          |
-| --------------- | ------------------- |
-| `const n = 10;` | `const total = 10;` |
-
-## Números mágicos
-
-Los números "sueltos" dentro de una expresión deben reemplazarse por una constante con nombre (los índices de arreglo, como `arr[0]`, están permitidos).
-
-| ❌ Incorrecto                       | ✅ Correcto                                                                 |
-| ---------------------------------- | -------------------------------------------------------------------------- |
-| `for (let i = 0; i < 10; i++) { }` | `const MAX_INTENTOS = 10;`<br>`for (let i = 0; i < MAX_INTENTOS; i++) { }` |
-
-## Longitud máxima de un método (40 líneas)
-
-| ❌ Incorrecto                                                                                                     | ✅ Correcto                                                                                                         |
-| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `public calcular(): number {`<br>`  // ... 45 líneas de código`<br>`  // todo mezclado en un solo método`<br>`}` | `public calcular(): number {`<br>`  const datos = this.obtenerDatos();`<br>`  return this.procesar(datos);`<br>`}` |
-
-## Longitud máxima de línea (120 caracteres)
-
-| ❌ Incorrecto                                                                                                                 | ✅ Correcto                                                                        |
-| ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `const mensaje = "un texto larguísimo que supera ampliamente los 120 caracteres permitidos en una sola línea de código...";` | `const mensaje =`<br>`  "un texto largo " +`<br>`  "separado en varias líneas.";` |
-
-## Llaves obligatorias en `if`/`else`/`for`/`while`
-
-| ❌ Incorrecto                       | ✅ Correcto                                         |
-| ---------------------------------- | -------------------------------------------------- |
-| `if (activo) console.log("Hola");` | `if (activo) {`<br>`  console.log("Hola");`<br>`}` |
-
-## Espaciado en estructuras de control
-
-Espacio después de la palabra clave (`if`, `for`, `while`) y antes del `(`; sin espacios pegados a `(` o `)`; espacio antes de `{`.
-
-| ❌ Incorrecto                                     | ✅ Correcto                                         |
-| ------------------------------------------------ | -------------------------------------------------- |
-| `if(activo){`<br>`  console.log("Hola");`<br>`}` | `if (activo) {`<br>`  console.log("Hola");`<br>`}` |
-
-## Modificadores de acceso explícitos
-
-Todo campo o método de una clase debe declarar `public`, `private` o `protected`.
-
-| ❌ Incorrecto                                    | ✅ Correcto                                              |
-| ----------------------------------------------- | ------------------------------------------------------- |
-| `class Persona {`<br>`  nombre: string;`<br>`}` | `class Persona {`<br>`  private nombre: string;`<br>`}` |
-
-## Métodos que no usan `this`
-
-Si un método no usa `this`, probablemente debería ser `static`.
-
-| ❌ Incorrecto                                                                                                                             | ✅ Correcto                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `class Calculadora {`<br>`  public sumar(primero: number, segundo: number): number {`<br>`    return primero + segundo;`<br>`  }`<br>`}` | `class Calculadora {`<br>`  public static sumar(primero: number, segundo: number): number {`<br>`    return primero + segundo;`<br>`  }`<br>`}` |
-
-## Una sola clase por archivo
-
-| ❌ Incorrecto                                              | ✅ Correcto                                                                     |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `// animal.ts`<br>`class Animal { }`<br>`class Perro { }` | `// animal.ts`<br>`class Animal { }`<br><br>`// perro.ts`<br>`class Perro { }` |
-
-## Sin métodos o funciones vacías
-
-| ❌ Incorrecto                    | ✅ Correcto                                                       |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `public constructor() {`<br>`}` | `public constructor() {`<br>`  this.inicializado = true;`<br>`}` |
-
-## Tipo de retorno explícito
-
-| ❌ Incorrecto                                                 | ✅ Correcto                                                           |
-| ------------------------------------------------------------ | -------------------------------------------------------------------- |
-| `public obtenerNombre() {`<br>`  return this.nombre;`<br>`}` | `public obtenerNombre(): string {`<br>`  return this.nombre;`<br>`}` |
+🍽 Gestión de Pedidos en un Restaurante
+
+Objetivos
+🥇 Objetivo General
+El trabajo práctico tiene por objetivo garantizar que cada alumno/a, a través de la investigación
+y experimentación, transite por el proceso de diseñar e implementar un sistema complejo.
+🎯 Objetivos particulares
+Principal
+Que los alumnos/as adquieran, mediante el desarrollo del trabajo práctico, una mejor
+comprensión de los temas que se analizan en la materia desde una perspectiva teórica.
+Trabajo en equipo
+Que los alumnos/as comprendan la importancia del trabajo en equipo para llevar adelante un
+proyecto. Los alumnos/as deberán conformar equipos de 5 integrantes.
+Técnicas y herramientas
+Que los alumnos/as comiencen a utilizar, o incrementen sus conocimientos sobre, técnicas y
+herramientas de desarrollo de software actualmente utilizadas en la industria.
+Forma de entrega y evaluación
+El trabajo práctico debe estar versionado en un repositorio de código (github).
+El trabajo práctico será evaluado tanto en forma grupal como en forma individual.
+Evaluación grupal
+Cada equipo debe realizar una presentación grupal del trabajo, en el cuál se evaluará el código
+y documentación de la solución.
+Evaluación individual
+Para la evaluación individual, serán tenidos en cuenta los aportes de cada integrante del equipo
+dentro del repositorio. En caso de que alguno de los integrantes del grupo no demuestre
+haberse comprometido con el trabajo grupal, dicho alumno/a deberá implementar
+funcionalidades extras al trabajo y luego se realizará un coloquio en el que deberá defender la
+solución propuesta.
+
+
+Introducción
+"Fogón del Barrio" es un restaurante que hasta ahora llevaba sus pedidos a mano, en papel. El
+dueño los contrató para digitalizar la gestión de pedidos, desde que el cliente los realiza hasta
+que la cocina los prepara y se genera la cuenta a pagar.
+
+Etapa 1: Diseño e Implementación del Sistema de Gestión de Pedidos
+en un Restaurante
+El restaurante atiende de tres formas distintas:
+Pedidos en el salón: el cliente se sienta en una mesa y pide directamente al mozo.
+Pedidos para retirar: el cliente encarga por teléfono y pasa a buscarlo en un horario
+acordado.
+Pedidos con envío propio: el restaurante cuenta con un cadete propio que reparte a
+domicilio dentro del barrio.
+Cada una de estas modalidades tiene sus propias particularidades, por ejemplo: los pedidos en
+salón poseen una mesa asociada, los pedidos para retirar tinen un horario de retiro, y los
+pedidos con envío una dirección y un costo de envío. El dueño quiere en un futuro sea sencillo
+sumar nuevas modalidades sin tener que rehacer todo el sistema.
+
+📋 Menú, precios y combos
+El menú se organiza en distintas categorías (entradas, platos principales, bebidas, postres,
+etc.). Cada producto individual tiene un precio de venta propio. Además de los productos
+individuales, el restaurante ofrece combos, que son agrupaciones de dos o más productos que
+se venden a un precio especial, menor a la suma de sus precios individuales. Ese "beneficio"
+del combo puede expresarse de distintas formas según el combo, por ejemplo, un descuento
+porcentual sobre la suma de sus productos, o directamente un precio fijo cerrado.
+El dueño quiere poder crear combos nuevos con frecuencia sin que esto implique modificar el
+sistema cada vez.
+
+🧑‍🍳 Preparación en cocina y estaciones
+El restaurante posee varias estaciones encargadas de preparar cada plato. Por ejemplo, la
+parrilla prepara las carnes, la cocina fría prepara ensaladas, la barra prepara bebidas, la cocina
+dulce prepara los postres. Un mismo pedido puede incluir productos que se preparen en
+distintas estaciones: un pedido con un plato de parrilla y un postre debe llegar a ambas
+estaciones para que cada una prepare lo que le corresponde, de forma independiente y en el
+orden en que le fue llegando a cada una. El dueño quiere que, si en el futuro agrega una
+estación nueva, esto no implique reescribir la lógica ya existente de las demás estaciones de
+trabajo.
+Cada ítem de un pedido, va pasando por distintos estadíos a medida que se prepara (por
+ejemplo: pendiente, en preparación, listo). En esta primera versión alcanza con registrar en qué
+estado se encuentra cada ítem, respetando las siguientes reglas:
+Un pedido no puede facturarse hasta que todos sus ítems estén en estado "listo".
+Un ítem que ya pasó a "en preparación" no puede modificarse ni cancelarse.
+
+📝 Corrección de pedidos antes de confirmar
+Para los casos de toma de pedido en salón o para retirar, los ítems se van agregando al pedido
+de a uno. Mientras esto ocurre, se considera que el pedido se encuentra "en construcción". Es
+común que, en este proceso, el mozo cargue algo por error (por ejemplo, un jugo de naranja en
+lugar de uno de manzana) y se dé cuenta antes de confirmar el pedido, al repasarlo con el
+cliente. En ese caso, el mozo necesita poder "borrar" lo escrito hasta alcanzar el item a corregir,
+sin tener que descartar todo el pedido y empezar de cero. Una vez que el pedido fue
+confirmado y enviado a cocina, ya no se permiten correcciones.
+
+💳 Medios de pago y descuentos
+Al momento de generar la cuenta, el cliente puede pagar con distintos medios:
+Efectivo,
+Tarjetas: de débito, de crédito
+Billetera virtual.
+El restaurante ofrece, además, algunos descuentos simples sobre el total del pedido:
+Un descuento por pagar en efectivo (por ejemplo, un porcentaje sobre el total).
+Un descuento especial en determinados días de la semana (por ejemplo, los martes).
+En esta primera versión del sistema, un mismo pedido puede calificar para más de un
+descuento, pero solo se le aplica el que resulte más beneficioso para el cliente (nunca se
+combinan dos descuentos a la vez).
+El dueño también quiere poder consultar en cualquier momento el historial de pedidos ya
+finalizados, con el detalle de qué se cobró en cada uno.
+
+Requerimientos Funcionales
+1. Registrar un pedido nuevo en alguna de las tres modalidades (salón, retiro, envío propio),
+con los datos particulares de cada una.
+2. Agregar y quitar productos (individuales o combos) a un pedido mientras está "en
+construcción" (no confirmado).
+3. Deshacer la última modificación realizada sobre un pedido en construcción.
+4. Confirmar un pedido y distribuir sus ítems entre las estaciones de cocina que correspondan
+según los productos incluidos.
+5. Permitir que cada estación procese sus ítems en el orden en que le llegaron, y marque el
+avance de cada uno (pendiente → en preparación → listo).
+6. Impedir modificar o cancelar un ítem que ya está "en preparación".
+7. Impedir facturar un pedido hasta que todos sus ítems estén "listos".
+8. Calcular el precio total de un pedido, contemplando productos individuales y combos con
+su beneficio correspondiente.
+9. Calcular el total a cobrar según el medio de pago elegido, aplicando el descuento por
+efectivo o por día especial cuando corresponda (solo el más beneficioso si se da más de
+uno).
+10. Consultar el historial de pedidos ya finalizados, con el detalle de lo cobrado en cada uno.
+
+
+¿Qué se pide?
+1. Diagrama de clase de la solución propuesta.
+2. Diagramas de sequencia de 2 o más requerimientos a definir por el equipo.
+3. Desarrollar una aplicación que permita emular la situación planteada. Proveer el código y
+las pruebas unitarias para verificar los requerimientos funcionales.
+4. Implementar una clase de integración que permita a la cátedra ejecutar, sobre el código
+propio del equipo, un conjunto de pruebas automatizadas estandarizadas. Los detalles de
+qué debe exponer esta clase, cómo debe nombrarse y qué restricciones tiene se
+encuentran en el Anexo — Integración para evaluación automática.
+
+
+📎 Sobre el Anexo: además de este enunciado, la cátedra corregirá cada entrega
+ejecutando una batería de pruebas propia sobre una clase de integración que cada equipo
+debe entregar. Esa clase actúa como punto de traducción entre las pruebas de la cátedra
+y el diseño interno del equipo: solo delega en las clases del dominio, sin contener lógica
+propia. El diseño interno (qué clases existen, cómo se relacionan, qué colecciones se
+usan) sigue siendo una decisión exclusiva de cada equipo; el Anexo únicamente define el
+contrato de métodos que la clase de integración debe cumplir para que la corrección
+automática pueda ejecutarse. Se recomienda leer el Anexo en conjunto con este
+enunciado antes de comenzar el diseño.
+
+Requerimientos adicionales:
+Desarrollar las pruebas unitarias para cada método realizado.
+El porcentaje de código cubierto por pruebas unitarias debe superar el 80%.
+Agregar archivo README.md al proyecto describiendo el proyecto, agregar instrucciones
+para su compilación y funcionamiento.
+Generar documentación de código utilizando JSDoc.
+continuará... 😉
