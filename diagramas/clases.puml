@@ -2,5 +2,104 @@
 
 title Gestion de pedidos en un restaurante 
 
+class Restaurante{
+    - historialPedidos[]:Pedido
+    - combos[]:Combo
 
+    + registrarPedido():void
+    + agregarItem(p:Pedido):void
+    + quitarItem(p:Pedido):void
+    + confirmarPedido(p:Pedido):void
+    + facturarPedido():number
+    + crearCombo():void
+    + eliminarCombo():void
+    + consultarRecaudacion():void
+}
+
+abstract class Pedido{
+    - items[]:Menu
+    - montoTotal:number
+    - pedidoConfirmado: boolean
+    - enum estado{PENDIENTE;EN_PREPARACION;LISTO}
+}
+
+class PedidoEnSalon{
+    - mesa:string
+}
+
+class PedidoParaRetirar{
+    - horario:number
+}
+
+class PedidoDelivery{
+    - direccion:string
+    - costoEnvio:number
+}
+
+abstract class Menu{
+    - precio:number
+    - nombre:string
+    - costo:number
+}
+
+class Entrada{
+
+}
+
+class PlatoPrincipal{
+
+}
+
+class Bebida{
+
+}
+
+class Postre{
+
+}
+
+class Combo{
+
+}
+
+abstract class EstacionDeTrabajo{
+    - productos[]:Menu
+}
+
+class Parrilla{
+
+}
+
+class CocinaFria{
+
+}
+
+class Barra{
+
+}
+
+class CocinaDulce{
+
+}
+
+interface calculadora{
+    + calcularPrecioTotal(p:Pedido):number
+}
+
+interface MedioDePago{
+    + pagoDeCuenta():number
+    + descuentoEspecial():number
+}
+class Efectivo{
+
+}
+class TarjetaDebito{
+
+}
+class TarjetaCredito{
+
+}
+class BilleteraVirtual{
+
+}
 @enduml
