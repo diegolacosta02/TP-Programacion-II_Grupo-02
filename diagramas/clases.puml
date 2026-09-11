@@ -2,5 +2,168 @@
 
 title Gestion de pedidos en un restaurante 
 
+class Restaurante {
+    - historialPedidos[]:Pedido
+    - menu: Menu[]
+    - estaciones EstacionDeTrabajo[]
 
+    + registrarPedido():void
+    + agregarItem(p:Pedido):void
+    + quitarItem(p:Pedido):void
+    + confirmarPedido(p:Pedido):void
+    + facturarPedido():number
+    + agregarItemMenu(item: Menu):void
+    + eliminarItemMenu(item: Menu):void
+    + consultarRecaudacion():void
+}
+'--------------------------------------------------------
+class Pedido {
+    - items: ItemPedido[]
+    - estado: EstadoPedido
+    - modalidad: TipoDePedido
+    
+    + agregarItem(item: ItemPedido): void
+    + quitarUltimoItem(): void
+    + deshacerUltimaModificacion(): void
+    + confirmar(): void
+    + puedeFacturar(): boolean
+    + calcularPrecioTotal(): number
+}
+
+enum EstadoPedido{
+    EN_CONSTRUCCION
+    CONFIRMADO
+    FACTURADO
+    FINALIZADO
+}
+
+abstract class TipoDePedido {
+    + calcularCostoAdicional():number
+}
+
+class PedidoEnSalon {
+    - mesa:string
+}
+
+class PedidoParaRetirar {
+    - horario:number
+}
+
+class PedidoDelivery {
+    - direccion:string
+    - costoEnvio:number
+}
+
+class ItemPedido {
+    - item: Menu
+    - cantidad: number
+    - estado: EstadoItem
+
+    + comenzarPreparacion(): void
+    + marcarListo(): void
+    + modificar(): void
+    + cancelar(): void
+    + getPrecio(): number
+}
+
+enum EstadoItem {
+    PENDIENTE,
+    EN_PREPARACION
+    LISTO
+}
+'----------------------------------------------------------
+abstract class Menu {
+    - nombre:string
+    - categoria: Categoria
+
+    + getPrecio(): number
+}
+
+class Producto {
+    - precio: number
+}
+
+class Combo {
+    - productos[]:Menu
+    - TipoDeDescuento
+}
+
+enum Categoria {
+    ENTRADA,
+    PLATO_PRINCIPAL.
+    BEBIDA,
+    POSTRE
+}
+
+interface TipoDeDescuento {
+    + calcular(productos: Menu[]): number;
+}
+class descuentoPorcentual implements TipoDeDescuento{}
+class PrecioFijo implements TipoDeDescuento{}
+'----------------------------------------------------------
+interface EstacionDeTrabajo{
+    + recibirItem(item:Menu): void
+    + prepararSiguiente(item: Menu): void
+}
+
+class Parrilla {
+    - colaDePedidos[]
+}
+
+class CocinaFria {
+    - colaDePedidos[]
+}
+
+class Barra {
+    - colaDePedidos[]
+}
+
+class CocinaDulce {
+    - colaDePedidos[]
+}
+'----------------------------------------------------------
+class Factura {
+    - totalPedido: number
+    - descuento: number
+    - totalCobrado: number
+
+    + calcularTotal(): number
+}
+
+interface MedioDePago {
+    + pagoDeCuenta():number
+}
+class Efectivo{}
+class TarjetaDebito{}
+class TarjetaCredito{}
+class BilleteraVirtual{}
+
+interface Descuento {
+    + calcular(total: number): number
+}
+class DescuentoEfectivo
+class DescuentoDiaEspecial
+'Relaciones'
+
+PedidoEnSalon -u-|> Pedido
+PedidoDelivery -u-|> Pedido
+PedidoParaRetirar -u-|> Pedido
+
+Combo -u-|> Menu
+Producto -u-|> Menu
+
+Parrilla -u-|> EstacionDeTrabajo
+CocinaFria -u-|> EstacionDeTrabajo
+Barra -u-|> EstacionDeTrabajo
+CocinaDulce -u-|> EstacionDeTrabajo
+
+Efectivo -u-|> MedioDePago
+TarjetaCredito -u-|> MedioDePago
+TarjetaDebito -u-|> MedioDePago
+BilleteraVirtual -u-|> MedioDePago
+
+Restaurante o-- Menu
+Restaurante o-- EstacionDeTrabajo
+Restaurante o-- Pedido
+Restaurante o-- MedioDePago
 @enduml
