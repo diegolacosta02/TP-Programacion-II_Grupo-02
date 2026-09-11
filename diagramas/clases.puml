@@ -2,118 +2,155 @@
 
 title Gestion de pedidos en un restaurante 
 
-class Restaurante{
+class Restaurante {
     - historialPedidos[]:Pedido
-    - combos[]:Combo
+    - menu: Menu[]
+    - estaciones EstacionDeTrabajo[]
 
     + registrarPedido():void
     + agregarItem(p:Pedido):void
     + quitarItem(p:Pedido):void
     + confirmarPedido(p:Pedido):void
     + facturarPedido():number
-    + crearCombo():void
-    + eliminarCombo():void
+    + agregarItemMenu(item: Menu):void
+    + eliminarItemMenu(item: Menu):void
     + consultarRecaudacion():void
 }
-
-abstract class Pedido{
-    - items[]:Menu
-    - montoTotal:number
-    - pedidoConfirmado: boolean
-    - enum estado{PENDIENTE;EN_PREPARACION;LISTO}
+'--------------------------------------------------------
+class Pedido {
+    - items: ItemPedido[]
+    - estado: EstadoPedido
+    - modalidad: TipoDePedido
+    
+    + agregarItem(item: ItemPedido): void
+    + quitarUltimoItem(): void
+    + deshacerUltimaModificacion(): void
+    + confirmar(): void
+    + puedeFacturar(): boolean
+    + calcularPrecioTotal(): number
 }
 
-class PedidoEnSalon{
+enum EstadoPedido{
+    EN_CONSTRUCCION
+    CONFIRMADO
+    FACTURADO
+    FINALIZADO
+}
+
+abstract class TipoDePedido {
+    + calcularCostoAdicional():number
+}
+
+class PedidoEnSalon {
     - mesa:string
 }
 
-class PedidoParaRetirar{
+class PedidoParaRetirar {
     - horario:number
 }
 
-class PedidoDelivery{
+class PedidoDelivery {
     - direccion:string
     - costoEnvio:number
 }
 
-abstract class Menu{
-    - precio:number
+class ItemPedido {
+    - item: Menu
+    - cantidad: number
+    - estado: EstadoItem
+
+    + comenzarPreparacion(): void
+    + marcarListo(): void
+    + modificar(): void
+    + cancelar(): void
+    + getPrecio(): number
+}
+
+enum EstadoItem {
+    PENDIENTE,
+    EN_PREPARACION
+    LISTO
+}
+'----------------------------------------------------------
+abstract class Menu {
     - nombre:string
-    - costo:number
+    - categoria: Categoria
+
+    + getPrecio(): number
 }
 
-class Entrada{
-
+class Producto {
+    - precio: number
 }
 
-class PlatoPrincipal{
-
-}
-
-class Bebida{
-
-}
-
-class Postre{
-
-}
-
-class Combo{
-
-}
-
-abstract class EstacionDeTrabajo{
+class Combo {
     - productos[]:Menu
+    - TipoDeDescuento
 }
 
-class Parrilla{
-
+enum Categoria {
+    ENTRADA,
+    PLATO_PRINCIPAL.
+    BEBIDA,
+    POSTRE
 }
 
-class CocinaFria{
-
+interface TipoDeDescuento {
+    + calcular(productos: Menu[]): number;
+}
+class descuentoPorcentual implements TipoDeDescuento{}
+class PrecioFijo implements TipoDeDescuento{}
+'----------------------------------------------------------
+interface EstacionDeTrabajo{
+    + recibirItem(item:Menu): void
+    + prepararSiguiente(item: Menu): void
 }
 
-class Barra{
-
+class Parrilla {
+    - colaDePedidos[]
 }
 
-class CocinaDulce{
-
+class CocinaFria {
+    - colaDePedidos[]
 }
 
-interface calculadora{
-    + calcularPrecioTotal(p:Pedido):number
+class Barra {
+    - colaDePedidos[]
 }
 
-interface MedioDePago{
+class CocinaDulce {
+    - colaDePedidos[]
+}
+'----------------------------------------------------------
+class Factura {
+    - totalPedido: number
+    - descuento: number
+    - totalCobrado: number
+
+    + calcularTotal(): number
+}
+
+interface MedioDePago {
     + pagoDeCuenta():number
-    + descuentoEspecial():number
 }
-class Efectivo{
+class Efectivo{}
+class TarjetaDebito{}
+class TarjetaCredito{}
+class BilleteraVirtual{}
 
+interface Descuento {
+    + calcular(total: number): number
 }
-class TarjetaDebito{
-
-}
-class TarjetaCredito{
-
-}
-class BilleteraVirtual{
-
-}
-
+class DescuentoEfectivo
+class DescuentoDiaEspecial
 'Relaciones'
 
 PedidoEnSalon -u-|> Pedido
 PedidoDelivery -u-|> Pedido
 PedidoParaRetirar -u-|> Pedido
 
-Entrada -u-|> Menu
-PlatoPrincipal -u-|> Menu
-Postre -u-|> Menu
-Bebida -u-|> Menu
 Combo -u-|> Menu
+Producto -u-|> Menu
 
 Parrilla -u-|> EstacionDeTrabajo
 CocinaFria -u-|> EstacionDeTrabajo
@@ -125,8 +162,8 @@ TarjetaCredito -u-|> MedioDePago
 TarjetaDebito -u-|> MedioDePago
 BilleteraVirtual -u-|> MedioDePago
 
-Restaurante -d-|> Menu
-Restaurante -d-|> EstacionDeTrabajo
-Restaurante -d-|> Pedido
-Restaurante -d-|> MedioDePago
+Restaurante o-- Menu
+Restaurante o-- EstacionDeTrabajo
+Restaurante o-- Pedido
+Restaurante o-- MedioDePago
 @enduml
