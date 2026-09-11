@@ -102,4 +102,31 @@ class TarjetaCredito{
 class BilleteraVirtual{
 
 }
+
+'Relaciones'
+
+PedidoEnSalon -u-|> Pedido
+PedidoDelivery -u-|> Pedido
+PedidoParaRetirar -u-|> Pedido
+
+Entrada -u-|> Menu
+PlatoPrincipal -u-|> Menu
+Postre -u-|> Menu
+Bebida -u-|> Menu
+Combo -u-|> Menu
+
+Parrilla -u-|> EstacionDeTrabajo
+CocinaFria -u-|> EstacionDeTrabajo
+Barra -u-|> EstacionDeTrabajo
+CocinaDulce -u-|> EstacionDeTrabajo
+
+Efectivo -u-|> MedioDePago
+TarjetaCredito -u-|> MedioDePago
+TarjetaDebito -u-|> MedioDePago
+BilleteraVirtual -u-|> MedioDePago
+
+Restaurante -d-|> Menu
+Restaurante -d-|> EstacionDeTrabajo
+Restaurante -d-|> Pedido
+Restaurante -d-|> MedioDePago
 @enduml
