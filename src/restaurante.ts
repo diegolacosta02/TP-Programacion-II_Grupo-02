@@ -1,3 +1,5 @@
+import { Menu } from "./menu";
+
 export class Restaurante {
 
     private historialPedidos[]: Pedido

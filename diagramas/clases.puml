@@ -76,7 +76,9 @@ abstract class Menu {
     - nombre:string
     - categoria: Categoria
 
-    + getPrecio(): number
+    {abstract} getPrecio(): number
+    + getNombre(): string
+    + getCategoria(): string
 }
 
 class Producto {
