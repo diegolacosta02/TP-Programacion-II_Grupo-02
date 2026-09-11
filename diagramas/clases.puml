@@ -8,7 +8,7 @@ class Restaurante {
     - estaciones EstacionDeTrabajo[]
 
     + registrarPedido():void
-    + agregarItem(p:Pedido):void
+    + agregarItem(p:Pedido, i:ItemPedido):void
     + quitarItem(p:Pedido):void
     + confirmarPedido(p:Pedido):void
     + facturarPedido():number
