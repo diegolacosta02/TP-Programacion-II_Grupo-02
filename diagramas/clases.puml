@@ -37,7 +37,7 @@ enum EstadoPedido{
     FINALIZADO
 }
 
-abstract class TipoDePedido {
+interface TipoDePedido {
     + calcularCostoAdicional():number
 }
 

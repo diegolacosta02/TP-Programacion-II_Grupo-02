@@ -1,3 +1,3 @@
-export abstract class TipoDePedido {
-    abstract calcularCostoAdicional(): number;
+export interface TipoDePedido {
+    calcularCostoAdicional(): number;
 }
