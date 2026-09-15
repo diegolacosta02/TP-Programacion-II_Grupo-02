@@ -3,7 +3,7 @@
 title Gestion de pedidos en un restaurante 
 
 class Restaurante {
-    - historialPedidos[]:Pedido
+    - historialPedidos:Pedido[]
     - menu: Menu[]
     - estaciones EstacionDeTrabajo[]
 

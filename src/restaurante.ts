@@ -2,7 +2,7 @@ import { Menu } from "./menu";
 
 export class Restaurante {
 
-    private historialPedidos[]: Pedido
+    private historialPedidos: Pedido[]
     private menu: Menu[]
     private estaciones: EstacionDeTrabajo[]
     // menuInicial = productos y combos 
@@ -14,16 +14,16 @@ export class Restaurante {
     }
 
     public registrarPedido(pedido: Pedido) : void {
-        this.historialPedidos.push(pedido); // Registra un nuevo pedido y lo agrega al historial
+        this.historialPedidos.push(pedido);
     }
 
 
     public agregarItem (pedido: Pedido, item: ItemPedido) : void{
-        pedido.agregarItem(item); // Agrega un item pedido
+        pedido.agregarItem(item);
     }
 
     public quitarItem(pedido: Pedido) : void {
-        pedido.quitarUltimoItem(); // Elimina el ultimo item agregado a un pedido
+        pedido.quitarUltimoItem();
     }
 
     public confirmarPedido(pedido: Pedido) : void {
