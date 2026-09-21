@@ -17,4 +17,19 @@ export default class Pedido {
         return this.estado.toString()
     }
 
+    public agregarItem(item: ItemPedido): void{
+        this.items.push(item);
+    }
+
+    public quitarUltimoItem(): void{
+        if (this.items.length === 0) {
+            throw new Error("No hay ningun item en la lista");
+        }
+        
+        this.items.pop();
+    }
+
+    public confirmar(): void {
+        this.estado = EstadoPedido.CONFIRMADO;
+    }
 }

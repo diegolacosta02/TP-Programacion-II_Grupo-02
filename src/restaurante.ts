@@ -1,4 +1,7 @@
+import EstacionDeTrabajo from "./estaciondetrabajo";
+import ItemPedido from "./itempedido";
 import { Menu } from "./menu";
+import Pedido from "./pedido";
 
 export class Restaurante {
 

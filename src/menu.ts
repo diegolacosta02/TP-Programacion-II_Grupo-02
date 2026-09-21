@@ -1,21 +1,19 @@
-import { Categoria } from "./categoria";
+import { TipoEstacionTrabajo } from "./tipoEstacion";
 
 export abstract class Menu {
-    protected nombre: string;
-    protected categoria: Categoria;
+  protected nombre: string;
+  protected precio: number
 
-    constructor(nombre: string, categoria: Categoria){
-        this.nombre = nombre;
-        this.categoria = categoria;
-    }
+  constructor(nombre: string, precio: number){
+    this.nombre = nombre;
+    this.precio = precio;
+  }
 
-    abstract getPrecio(): number;
+  abstract getPrecio(): number;
 
-    getNombre(): string {
+  abstract getEstacionDetrabajo(): TipoEstacionTrabajo;
+  public getNombre(): string {
     return this.nombre;
   }
  
-  getCategoria(): Categoria {
-    return this.categoria;
-  }
 }
