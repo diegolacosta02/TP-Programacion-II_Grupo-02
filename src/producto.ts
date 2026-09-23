@@ -8,7 +8,7 @@ export default class Producto extends Menu {
     private tipoEstacion: TipoEstacionTrabajo;
 
     constructor(nombre: string, categoria: Categoria, precio: number, tipoEstacion: TipoEstacionTrabajo) {
-        super(nombre, precio)
+        super(nombre, precio);
         this.categoria = categoria;
         this.tipoEstacion = tipoEstacion;
     }
@@ -17,7 +17,11 @@ export default class Producto extends Menu {
         return this.precio;
     }
 
-    public getEstacionDetrabajo(): TipoEstacionTrabajo {
+    public getCategoria(): Categoria {
+        return this.categoria;
+    }
+
+    public getTipoEstacion(): TipoEstacionTrabajo {
         return this.tipoEstacion;
     }
 }

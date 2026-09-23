@@ -43,15 +43,21 @@ interface TipoDePedido {
 
 class PedidoEnSalon {
     - mesa:string
+    + calcularCostoAdicional():number
+
 }
 
 class PedidoParaRetirar {
     - horario:number
+    + calcularCostoAdicional():number
+
 }
 
 class PedidoDelivery {
     - direccion:string
     - costoEnvio:number
+    + calcularCostoAdicional():number
+
 }
 
 class ItemPedido {
@@ -123,7 +129,7 @@ enum TipoEstacionTrabajo{
 '----------------------------------------------------------
 class Factura {
     - totalPedido: number
-    - descuento: number
+    - descuentos: Descuento[] // puede acumular dto en efectivo + dto especial
     - totalCobrado: number
 
     + calcularTotal(): number
