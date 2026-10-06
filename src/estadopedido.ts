@@ -1,0 +1,6 @@
+export enum EstadoPedido {
+    EN_CONSTRUCCION,
+    CONFIRMADO,
+    FACTURADO,
+    FINALIZADO
+}
