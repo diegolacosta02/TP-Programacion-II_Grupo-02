@@ -17,10 +17,9 @@ class Restaurante {
     + consultarRecaudacion():void
 }
 '--------------------------------------------------------
-class Pedido {
+abstract class Pedido {
     - items: ItemPedido[]
     - estado: EstadoPedido
-    - modalidad: TipoDePedido
     
     + agregarItem(item: ItemPedido): void
     + quitarUltimoItem(): void
@@ -28,6 +27,7 @@ class Pedido {
     + confirmar(): void
     + puedeFacturar(): boolean
     + calcularPrecioTotal(): number
+    + abstract calcularCostoAdicional():number
 }
 
 enum EstadoPedido{
@@ -37,26 +37,20 @@ enum EstadoPedido{
     FINALIZADO
 }
 
-interface TipoDePedido {
-    + calcularCostoAdicional():number
-}
-
 class PedidoEnSalon {
     - mesa:string
-    + calcularCostoAdicional():number
+    
 
 }
 
 class PedidoParaRetirar {
     - horario:number
-    + calcularCostoAdicional():number
 
 }
 
 class PedidoDelivery {
     - direccion:string
     - costoEnvio:number
-    + calcularCostoAdicional():number
 
 }
 
@@ -102,7 +96,7 @@ class Combo {
 
 enum Categoria {
     ENTRADA,
-    PLATO_PRINCIPAL.
+    PLATO_PRINCIPAL,
     BEBIDA,
     POSTRE
 }
@@ -153,7 +147,11 @@ class DescuentoDiaEspecial
 PedidoEnSalon -u-|> Pedido
 PedidoDelivery -u-|> Pedido
 PedidoParaRetirar -u-|> Pedido
+ItemPedido -r-* Pedido
+Factura -l-* Pedido
+Factura o-- Descuento
 
+Combo ..|> TipoDeDescuento
 Combo -u-|> Menu
 Producto -u-|> Menu
 
@@ -162,8 +160,14 @@ TarjetaCredito -u-|> MedioDePago
 TarjetaDebito -u-|> MedioDePago
 BilleteraVirtual -u-|> MedioDePago
 
-Restaurante o-- Menu
-Restaurante o-- EstacionDeTrabajo
-Restaurante o-- Pedido
-Restaurante o-- MedioDePago
+Descuento ..|> DescuentoEfectivo
+Descuento ..|> DescuentoDiaEspecial
+
+
+Restaurante *-- Menu
+Restaurante *-r- EstacionDeTrabajo
+Restaurante *-- Pedido
+Restaurante o-l- MedioDePago
+Restaurante o-- ItemPedido
+
 @enduml

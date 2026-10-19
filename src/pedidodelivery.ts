@@ -1,6 +1,6 @@
-import { TipoDePedido } from "./tipodepedido";
+import Pedido from "./pedido";
 
-export default class PedidoDelivery implements TipoDePedido {
+export default class PedidoDelivery extends Pedido {
     private direccion: string;
     private costoEnvio: number;
 

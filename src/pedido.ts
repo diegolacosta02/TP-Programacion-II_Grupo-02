@@ -1,14 +1,14 @@
 import { EstadoPedido } from "./estadopedido";
 import ItemPedido from "./itempedido";
-import { TipoDePedido } from "./tipodepedido";
+import Stack from "./estructurasdedatos/stack";
 
 export default class Pedido {
-    private items: ItemPedido[]
+    private items: Stack<ItemPedido>
     private estado: EstadoPedido
     private modalidad: TipoDePedido
 
     constructor(modalidad: TipoDePedido) {
-        this.items = []
+        this.items = new Stack
         this.estado = EstadoPedido.EN_CONSTRUCCION
         this.modalidad = modalidad;
     }
@@ -26,9 +26,9 @@ export default class Pedido {
             throw new Error("No hay ningun item en la lista");
         }
         
-        this.items.pop();
+        this.items.pop()
     }
-
+    
     public confirmar(): void {
         this.estado = EstadoPedido.CONFIRMADO;
     }

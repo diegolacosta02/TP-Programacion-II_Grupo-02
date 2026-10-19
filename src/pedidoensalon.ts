@@ -1,6 +1,6 @@
-import { TipoDePedido } from "./tipodepedido";
+import Pedido from "./pedido";
 
-export default class PedidoEnSalon implements TipoDePedido {
+export default class PedidoEnSalon extends Pedido {
     private mesa: number;
     private propinaMozo: number;
 
