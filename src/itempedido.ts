@@ -24,6 +24,11 @@ export default class ItemPedido {
     public getEstado(): EstadoItem {
         return this.estado;
     }
+
+    public describir(): string {
+        return `${this.cantidad}x ${this.getNombre()} - $${this.getPrecio()}`;
+    }
+
     public getEstacion(): TipoEstacionTrabajo {
         return this.item.getEstacionDeTrabajo(this.getNombre());
     }

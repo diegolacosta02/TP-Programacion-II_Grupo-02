@@ -1,23 +1,19 @@
+import { CERO, CIEN } from "./constantes/constantes";
+import { DescuentoCombo } from "./descuentocombo";
 import { Menu } from "./menu";
-import { TipoDeDescuento } from "./tipodedescuento";
 
-export default class DescuentoPorcentual implements TipoDeDescuento {
-    private descuentoPorcentual:number
-   
-    constructor(descuento: number) {
-        this.descuentoPorcentual = descuento;
+export class DescuentoPorcentual implements DescuentoCombo {
+    private porcentaje: number;
+
+    public constructor(porcentaje: number) {
+        if (porcentaje < CERO || porcentaje > CIEN) {
+            throw new Error("El porcentaje debe estar entre 0 y 100.");
+        }
+        this.porcentaje = porcentaje;
     }
-    calcular(productos: Menu[]): number {
-        return this.getTotalProductos(productos) * this.descuentoPorcentual;
-    }
 
-    private getTotalProductos(productos: Menu[]): number {
-        let acum: number = 0;
-    
-        productos.forEach(producto => {
-            acum += producto.getPrecio();
-        });
-
-        return acum;
+    public calcular(productos: Menu[]): number {
+        const suma = productos.reduce((total, producto) => total + producto.getPrecio(), CERO);
+        return suma * (CIEN - this.porcentaje) / CIEN;
     }
 }

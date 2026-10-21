@@ -1,6 +1,6 @@
 import Comando from "./comando";
-import ItemPedido from "./itempedido";
-import Stack from "./estructurasdedatos/stack";
+import ItemPedido from "../itempedido";
+import Stack from "./stack";
 
 export default class ComandoQuitar implements Comando {
     private items: Stack<ItemPedido>;

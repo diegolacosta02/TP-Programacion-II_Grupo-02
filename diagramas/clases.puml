@@ -31,7 +31,7 @@ abstract class Pedido {
     + quitarUltimoItem(): void
     + confirmar(): void
     + puedeFacturarse(): boolean
-    + calcularPrecioTotal(): number
+    + calcularSubtotal(): number
     + abstract calcularCostoAdicional():number
 
     + deshacer(): void
@@ -39,9 +39,8 @@ abstract class Pedido {
 }
 
 enum EstadoPedido{
-    EN_CONSTRUCCION
-    CONFIRMADO
-    FACTURADO
+    EN_CONSTRUCCION,
+    CONFIRMADO,
     FINALIZADO
 }
 
@@ -76,7 +75,7 @@ class ItemPedido {
 
 enum EstadoItem {
     PENDIENTE,
-    EN_PREPARACION
+    EN_PREPARACION,
     LISTO
 }
 '----------------------------------------------------------
@@ -137,14 +136,12 @@ class Factura {
     + calcularTotal(): number
 }
 
-interface MedioDePago {
-    + pagoDeCuenta():number
+enum MedioDePago {
+    EFECTIVO,
+    TARJETA_DEBITO,
+    TARJETA_CREDITO,
+    BILLETERA_VIRTUAL
 }
-class Efectivo{}
-class TarjetaDebito{}
-class TarjetaCredito{}
-class BilleteraVirtual{}
-
 interface Descuento {
     + calcular(total: number): number
 }

@@ -1,12 +1,12 @@
 import { Menu } from "./menu";
-import { TipoDeDescuento } from "./tipodedescuento";
 import { TipoEstacionTrabajo } from "./constantes/tipoEstacion";
+import { DescuentoCombo } from "./descuentocombo";
 
 export default class Combo extends Menu {
     private productos: Menu[];
-    private tipoDescuento: TipoDeDescuento;
+    private tipoDescuento: DescuentoCombo;
 
-    public constructor(nombre: string, precio: number, tipoDescuento: TipoDeDescuento) {
+    public constructor(nombre: string, precio: number, tipoDescuento: DescuentoCombo) {
         super(nombre, precio);
         this.productos = [];
         this.tipoDescuento = tipoDescuento;

@@ -1,10 +1,13 @@
 import { EstadoPedido } from "./constantes/estadopedido";
 import ItemPedido from "./itempedido";
 import Stack from "./estructurasdedatos/stack";
-import Comando from "./comando";
-import ComandoAgregar from "./comandoagregar";
-import ComandoQuitar from "./comandoquitar";
+import Comando from "./estructurasdedatos/comando";
+import ComandoAgregar from "./estructurasdedatos/comandoagregar";
+import ComandoQuitar from "./estructurasdedatos/comandoquitar";
 import { CERO, MENOS_UNO } from "./constantes/constantes";
+import Factura from "./factura";
+import { MedioDePago } from "./mediosdepago/mediodepago";
+import Descuento from "./mediosdepago/descuento";
 
 export default class Pedido {
     private items: Stack<ItemPedido>
@@ -12,7 +15,7 @@ export default class Pedido {
     private historial: Stack<Comando>
 
     public constructor() {
-        this.items = new Stack<ItemPedido>()
+        this.items = new Stack<ItemPedido>();
         this.estado = EstadoPedido.EN_CONSTRUCCION;
         this.historial = new Stack<Comando>();
     }
@@ -71,7 +74,7 @@ export default class Pedido {
         return lista.length > CERO && lista.every(i => i.estaListo());
     }
 
-    public calcularPrecioTotal(): number {
+    public calcularSubtotal(): number {
         
         const lista = this.items.toArray();
         let contador= 0;
@@ -81,6 +84,19 @@ export default class Pedido {
         });
 
         return contador
+    }
+
+    public getDetalle(): string[] {
+        return this.items.toArray().map(item => item.describir());
+    }
+
+    public facturar(medioPago: MedioDePago, descuentos: Descuento[], fecha: Date): Factura {
+        if (!this.puedeFacturarse()) {
+            throw new Error("No se puede facturar: hay items que no estan listos.")
+        }
+        const factura = new Factura(this.getDetalle(), this.calcularSubtotal(), medioPago, descuentos, fecha)
+        this.estado = EstadoPedido.FINALIZADO
+        return factura
     }
 
     public deshacer(): void {
