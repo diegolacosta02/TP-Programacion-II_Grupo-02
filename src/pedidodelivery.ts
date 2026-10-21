@@ -4,7 +4,8 @@ export default class PedidoDelivery extends Pedido {
     private direccion: string;
     private costoEnvio: number;
 
-    constructor(direccion: string) {
+    public constructor(direccion: string) {
+        super()
         this.direccion = direccion;
         this.costoEnvio = 2500;
     }

@@ -1,12 +1,12 @@
 import Queue from "./estructurasdedatos/queue";
 import ItemPedido from "./itempedido";
-import { TipoEstacionTrabajo } from "./tipoEstacion";
+import { TipoEstacionTrabajo } from "./constantes/tipoEstacion";
 
 export default class EstacionDeTrabajo {
     private colaDePedidos: Queue<ItemPedido>
     private tipoEstacion: TipoEstacionTrabajo
 
-    constructor(tipoEstacion: TipoEstacionTrabajo) {
+    public constructor(tipoEstacion: TipoEstacionTrabajo) {
         this.colaDePedidos = new Queue
         this.tipoEstacion = tipoEstacion
     }
@@ -19,7 +19,7 @@ export default class EstacionDeTrabajo {
     }
 
     public prepararSiguiente(): void {
-
+        this.colaDePedidos.dequeue()
     }
 
 }

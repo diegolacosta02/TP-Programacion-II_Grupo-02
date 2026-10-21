@@ -13,8 +13,9 @@ export default class Stack<T> {
         this.head = newNode;
     }
 
+    // eslint-disable-next-line id-length
     public pop(): T | undefined {
-        if (this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
 
@@ -27,4 +28,29 @@ export default class Stack<T> {
         return this.head === undefined;
     }
 
+    public toArray(): T[] {
+        const resultado: T[] = [];
+        let actual = this.head;
+
+        while (actual !== undefined) {
+            resultado.push(actual.value);
+            actual = actual.next;
+        }
+
+        return resultado.reverse();
+    }
+
+    public peek(): T | undefined {
+        return this.isEmpty() ? undefined : this.head.value;
+    }
+
+    public size(): number {
+        let contador = 0;
+        let actual = this.head;
+        while (actual !== undefined) {
+            contador++;
+            actual = actual.next;
+        }
+        return contador;
+    }
 }

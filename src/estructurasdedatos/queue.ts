@@ -21,7 +21,7 @@ export default class Queue<T> {
     }
     
     public dequeue(): T | undefined {
-        if (this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
 

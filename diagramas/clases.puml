@@ -17,17 +17,25 @@ class Restaurante {
     + consultarRecaudacion():void
 }
 '--------------------------------------------------------
+interface Comando {
+    + ejecutar(comando: Comando)
+    + deshacer()
+}
 abstract class Pedido {
-    - items: ItemPedido[]
+    - items: Stack<ItemPedido>
     - estado: EstadoPedido
+    - historial: Stack<Comando>
     
+    - validarEnConstruccion(): void
     + agregarItem(item: ItemPedido): void
     + quitarUltimoItem(): void
-    + deshacerUltimaModificacion(): void
     + confirmar(): void
-    + puedeFacturar(): boolean
+    + puedeFacturarse(): boolean
     + calcularPrecioTotal(): number
     + abstract calcularCostoAdicional():number
+
+    + deshacer(): void
+    # ejecutar(comando: Comando): void
 }
 
 enum EstadoPedido{

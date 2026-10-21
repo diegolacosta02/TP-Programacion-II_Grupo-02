@@ -1,35 +1,98 @@
-import { EstadoPedido } from "./estadopedido";
+import { EstadoPedido } from "./constantes/estadopedido";
 import ItemPedido from "./itempedido";
 import Stack from "./estructurasdedatos/stack";
+import Comando from "./comando";
+import ComandoAgregar from "./comandoagregar";
+import ComandoQuitar from "./comandoquitar";
+import { CERO, MENOS_UNO } from "./constantes/constantes";
 
 export default class Pedido {
     private items: Stack<ItemPedido>
     private estado: EstadoPedido
-    private modalidad: TipoDePedido
+    private historial: Stack<Comando>
 
-    constructor(modalidad: TipoDePedido) {
-        this.items = new Stack
-        this.estado = EstadoPedido.EN_CONSTRUCCION
-        this.modalidad = modalidad;
+    public constructor() {
+        this.items = new Stack<ItemPedido>()
+        this.estado = EstadoPedido.EN_CONSTRUCCION;
+        this.historial = new Stack<Comando>();
     }
     
-    public getEstado(): string {
-        return this.estado.toString()
-    }
-
-    public agregarItem(item: ItemPedido): void{
-        this.items.push(item);
-    }
-
-    public quitarUltimoItem(): void{
-        if (this.items.length === 0) {
-            throw new Error("No hay ningun item en la lista");
+    private validarEnConstruccion(): void {
+        if (this.estado !== EstadoPedido.EN_CONSTRUCCION) {
+            throw new Error("El pedido ya fue confirmado, no admite modificaciones.");
         }
-        
-        this.items.pop()
+    }
+    
+    public getEstado(): EstadoPedido {
+        return this.estado
+    }
+
+    public agregarItem(item: ItemPedido): void {
+        this.validarEnConstruccion();
+        this.ejecutar(new ComandoAgregar(this.items, item));
+    }
+
+    public quitarUltimoItem(): void {
+        this.validarEnConstruccion();
+        if (this.items.isEmpty()) {
+            throw new Error("No hay ningún ítem en el pedido.");
+        }
+        this.ejecutar(new ComandoQuitar(this.items));
+    }
+
+    public quitarHasta(item: ItemPedido): void {
+        this.validarEnConstruccion();
+
+        const lista = this.items.toArray();
+        const posicion = lista.indexOf(item);
+
+        if (posicion === MENOS_UNO) {
+            throw new Error("El ítem no pertenece al pedido.");
+        }
+
+        const cantidadAQuitar = lista.length - posicion;
+
+        for (let i = 0; i < cantidadAQuitar; i++) {
+            this.quitarUltimoItem();
+        }
     }
     
     public confirmar(): void {
+        this.validarEnConstruccion();
+        if (this.items.isEmpty()) {
+            throw new Error("No se puede confirmar un pedido vacío.");
+        }
         this.estado = EstadoPedido.CONFIRMADO;
+        this.historial = new Stack<Comando>();
+    }
+
+    public puedeFacturarse(): boolean {
+        const lista = this.items.toArray();
+        return lista.length > CERO && lista.every(i => i.estaListo());
+    }
+
+    public calcularPrecioTotal(): number {
+        
+        const lista = this.items.toArray();
+        let contador= 0;
+
+        lista.forEach(item => {
+            contador += item.getPrecio()
+        });
+
+        return contador
+    }
+
+    public deshacer(): void {
+        this.validarEnConstruccion();
+        if (this.historial.isEmpty()) {
+            throw new Error("No hay nada para deshacer.");
+        }
+        this.historial.pop()?.deshacer();
+    }
+
+    protected ejecutar(comando: Comando): void {
+        comando.ejecutar();
+        this.historial.push(comando);
     }
 }
