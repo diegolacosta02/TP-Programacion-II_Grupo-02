@@ -1,19 +1,24 @@
+import { CERO } from "./constantes/constantes";
+import { EstadoPedido } from "./constantes/estadopedido";
 import Pedido from "./pedido";
-import { TipoDePedido } from "./tipodepedido";
 
-export default class PedidoParaRetirar implements TipoDePedido {
+export default class PedidoParaRetirar extends Pedido {
     private horario: number
 
-    constructor() {
+    public constructor() {
+        super()
         this.horario = 0
     }
 
-    /*public puedeRetirar(p: Pedido): boolean {
-        return p.getEstado() === "FINALIZADO"
-    } este metodo deberia estar en pedido directamente */ 
+    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
+    public puedeRetirar(pedido: Pedido): boolean {
+        
+        return pedido.getEstado() === EstadoPedido.FINALIZADO
+    }
 
+    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
     public calcularCostoAdicional(): number {
-        return 0
+        return CERO
     }
 
 }

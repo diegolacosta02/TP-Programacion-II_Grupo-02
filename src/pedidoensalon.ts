@@ -1,10 +1,11 @@
-import { TipoDePedido } from "./tipodepedido";
+import Pedido from "./pedido";
 
-export default class PedidoEnSalon implements TipoDePedido {
+export default class PedidoEnSalon extends Pedido {
     private mesa: number;
     private propinaMozo: number;
 
-    constructor(mesa: number) {
+    public constructor(mesa: number) {  
+        super();
         this.mesa = mesa;
         this.propinaMozo = 1000
     }
