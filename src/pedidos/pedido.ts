@@ -8,8 +8,10 @@ import { CERO, MENOS_UNO } from "../constantes/constantes";
 import Factura from "./factura";
 import { MedioDePago } from "../constantes/mediodepago";
 import Descuento from "../descuentos/descuento";
+import SelectorDeDescuento from "../descuentos/selectordedescuento";
+import ItemPreparacion from "./itempreparacion";
 
-export default class Pedido {
+export abstract class Pedido {
     private items: Stack<ItemPedido>
     private estado: EstadoPedido
     private historial: Stack<Comando>
@@ -20,6 +22,8 @@ export default class Pedido {
         this.historial = new Stack<Comando>();
     }
     
+    public abstract calcularCostoAdicional(): number;
+
     private validarEnConstruccion(): void {
         if (this.estado !== EstadoPedido.EN_CONSTRUCCION) {
             throw new Error("El pedido ya fue confirmado, no admite modificaciones.");
@@ -68,6 +72,14 @@ export default class Pedido {
         this.estado = EstadoPedido.CONFIRMADO;
         this.historial = new Stack<Comando>();
     }
+    
+    public getItems(): ItemPedido[] {
+        return this.items.toArray();
+    }
+
+    public getPreparaciones(): ItemPreparacion[] {
+        return this.getItems().flatMap(item => item.getPreparaciones());
+    }
 
     public puedeFacturarse(): boolean {
         const lista = this.items.toArray();
@@ -77,17 +89,23 @@ export default class Pedido {
     public calcularSubtotal(): number {
         
         const lista = this.items.toArray();
-        let contador= 0;
+        let resultado = 0;
 
         lista.forEach(item => {
-            contador += item.getPrecio()
+            resultado += item.getPrecio()
         });
 
-        return contador
+        return resultado
     }
 
     public getDetalle(): string[] {
         return this.items.toArray().map(item => item.describir());
+    }
+
+    public calcularTotalACobrar(medioPago: MedioDePago, descuentos: Descuento[], fecha: Date): number {
+        const subtotal = this.calcularSubtotal();
+        const descuento = new SelectorDeDescuento(descuentos).elegirMejor(subtotal, medioPago, fecha);
+        return subtotal - descuento.calcular(subtotal) + this.calcularCostoAdicional();
     }
 
     public facturar(medioPago: MedioDePago, descuentos: Descuento[], fecha: Date): Factura {
@@ -104,7 +122,7 @@ export default class Pedido {
         if (this.historial.isEmpty()) {
             throw new Error("No hay nada para deshacer.");
         }
-        this.historial.pop()?.deshacer();
+        this.historial.pops().deshacer();
     }
 
     protected ejecutar(comando: Comando): void {

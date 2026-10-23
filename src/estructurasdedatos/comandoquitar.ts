@@ -11,7 +11,7 @@ export default class ComandoQuitar implements Comando {
     }
 
     public ejecutar(): void {
-        this.itemQuitado = this.items.pop();
+        this.itemQuitado = this.items.pops();
     }
 
     public deshacer(): void {

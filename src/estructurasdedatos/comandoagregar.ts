@@ -16,6 +16,6 @@ export default class ComandoAgregar implements Comando {
     }
 
     public deshacer(): void {
-        this.items.pop();
+        this.items.pops();
     }
 }

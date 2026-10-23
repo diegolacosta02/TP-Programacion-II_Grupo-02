@@ -1,24 +1,21 @@
-import { CERO } from "../constantes/constantes";
-import { EstadoPedido } from "../constantes/estadopedido";
-import Pedido from "./pedido";
+import { COSTO_RETIRO } from "../constantes/constantes";
+import { Pedido } from "./pedido";
 
 export default class PedidoParaRetirar extends Pedido {
-    private horario: number
-
-    public constructor() {
+    private horario: Date
+    
+    public constructor(horario: Date) {
         super()
-        this.horario = CERO
+        this.horario = horario
     }
 
-    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
-    public puedeRetirar(pedido: Pedido): boolean {
-        
-        return pedido.getEstado() === EstadoPedido.FINALIZADO
+    public puedeRetirar(ahora: Date): boolean {
+        return this.puedeFacturarse() && ahora >= this.horario;
     }
 
     // eslint-disable-next-line @typescript-eslint/class-methods-use-this
     public calcularCostoAdicional(): number {
-        return CERO
+        return COSTO_RETIRO;
     }
 
 }

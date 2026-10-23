@@ -1,13 +1,25 @@
-import Pedido from "./pedido";
+import { CERO } from "../constantes/constantes";
+import { Pedido } from "./pedido";
 
 export default class PedidoDelivery extends Pedido {
     private direccion: string;
     private costoEnvio: number;
 
-    public constructor(direccion: string) {
-        super()
+    public constructor(direccion: string, costoEnvio: number) {
+        super();
+        if (costoEnvio < CERO) {
+            throw new Error("El costo de envío no puede ser negativo.");
+        }
         this.direccion = direccion;
-        this.costoEnvio = 2500;
+        this.costoEnvio = costoEnvio;
+    }
+
+    public getDireccion(): string {
+        return this.direccion;
+    }
+
+    public getCostoEnvio(): number {
+        return this.costoEnvio;
     }
 
     public calcularCostoAdicional(): number {
