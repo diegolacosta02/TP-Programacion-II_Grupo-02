@@ -1,0 +1,6 @@
+export enum MedioDePago {
+    EFECTIVO,
+    TARJETA_DEBITO,
+    TARJETA_CREDITO,
+    BILLETERA_VIRTUAL
+}

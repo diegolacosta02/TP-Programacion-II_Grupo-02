@@ -17,46 +17,47 @@ class Restaurante {
     + consultarRecaudacion():void
 }
 '--------------------------------------------------------
-class Pedido {
-    - items: ItemPedido[]
+interface Comando {
+    + ejecutar(comando: Comando)
+    + deshacer()
+}
+abstract class Pedido {
+    - items: Stack<ItemPedido>
     - estado: EstadoPedido
-    - modalidad: TipoDePedido
+    - historial: Stack<Comando>
     
+    - validarEnConstruccion(): void
     + agregarItem(item: ItemPedido): void
     + quitarUltimoItem(): void
-    + deshacerUltimaModificacion(): void
     + confirmar(): void
-    + puedeFacturar(): boolean
-    + calcularPrecioTotal(): number
+    + puedeFacturarse(): boolean
+    + calcularSubtotal(): number
+    + abstract calcularCostoAdicional():number
+
+    + deshacer(): void
+    # ejecutar(comando: Comando): void
 }
 
 enum EstadoPedido{
-    EN_CONSTRUCCION
-    CONFIRMADO
-    FACTURADO
+    EN_CONSTRUCCION,
+    CONFIRMADO,
     FINALIZADO
-}
-
-interface TipoDePedido {
-    + calcularCostoAdicional():number
 }
 
 class PedidoEnSalon {
     - mesa:string
-    + calcularCostoAdicional():number
+    
 
 }
 
 class PedidoParaRetirar {
     - horario:number
-    + calcularCostoAdicional():number
 
 }
 
 class PedidoDelivery {
     - direccion:string
     - costoEnvio:number
-    + calcularCostoAdicional():number
 
 }
 
@@ -65,16 +66,24 @@ class ItemPedido {
     - cantidad: number
     - estado: EstadoItem
 
+    + getPrecio(): number
+    + estaListo(): boolean
+    + puedeModificarse(): boolean
+    + modificar(): void
+}
+
+class ItemPreparacion {
+    - producto: Producto
+    - cantidad : number
+    - estado: EstadoItem
+
     + comenzarPreparacion(): void
     + marcarListo(): void
-    + modificar(): void
-    + cancelar(): void
-    + getPrecio(): number
 }
 
 enum EstadoItem {
     PENDIENTE,
-    EN_PREPARACION
+    EN_PREPARACION,
     LISTO
 }
 '----------------------------------------------------------
@@ -102,7 +111,7 @@ class Combo {
 
 enum Categoria {
     ENTRADA,
-    PLATO_PRINCIPAL.
+    PLATO_PRINCIPAL,
     BEBIDA,
     POSTRE
 }
@@ -135,35 +144,57 @@ class Factura {
     + calcularTotal(): number
 }
 
-interface MedioDePago {
-    + pagoDeCuenta():number
+enum MedioDePago {
+    EFECTIVO,
+    TARJETA_DEBITO,
+    TARJETA_CREDITO,
+    BILLETERA_VIRTUAL
 }
-class Efectivo{}
-class TarjetaDebito{}
-class TarjetaCredito{}
-class BilleteraVirtual{}
-
 interface Descuento {
-    + calcular(total: number): number
+    + getNombre(): string
+    + aplica(medioPago: MedioDePago, fecha:Date): boolean
+    + calcular(subtotal: number): number
 }
-class DescuentoEfectivo
-class DescuentoDiaEspecial
-'Relaciones'
+class DescuentoEfectivo {
+    - porcentaje: number
+}
+class DescuentoDiaEspecial {
+    - diaSemana: number
+    - porcentaje: number
+}
+class SinDescuento
 
-PedidoEnSalon -u-|> Pedido
-PedidoDelivery -u-|> Pedido
-PedidoParaRetirar -u-|> Pedido
+class SelectorDeDescuento {
+    - descuentos: Descuento[]
+    + elegirMejor(subtotal: number, medioPago: MedioDePago, fecha: Date): Descuento
+}
 
+Pedido <|-u- PedidoEnSalon
+Pedido <|-u- PedidoDelivery
+Pedido <|-u- PedidoParaRetirar
+Pedido *-l- ItemPedido
+Pedido .r.> Factura 
+Pedido --> EstadoPedido
+Pedido ..> SelectorDeDescuento
+Factura <.. Descuento
+
+ItemPedido *-- ItemPreparacion
+ItemPreparacion --> EstadoItem
+
+Combo ..|> TipoDeDescuento
 Combo -u-|> Menu
 Producto -u-|> Menu
+Producto --> Categoria
 
-Efectivo -u-|> MedioDePago
-TarjetaCredito -u-|> MedioDePago
-TarjetaDebito -u-|> MedioDePago
-BilleteraVirtual -u-|> MedioDePago
+Descuento <|.. DescuentoEfectivo
+Descuento <|.. DescuentoDiaEspecial
+Descuento <|.. SinDescuento
 
-Restaurante o-- Menu
-Restaurante o-- EstacionDeTrabajo
-Restaurante o-- Pedido
-Restaurante o-- MedioDePago
+EstacionDeTrabajo -u-> TipoEstacionTrabajo
+
+Restaurante *-- Menu
+Restaurante *-r- EstacionDeTrabajo
+Restaurante *-- Pedido
+Restaurante o-l- MedioDePago
+
 @enduml

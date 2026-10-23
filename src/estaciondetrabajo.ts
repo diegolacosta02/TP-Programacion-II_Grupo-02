@@ -1,25 +1,37 @@
 import Queue from "./estructurasdedatos/queue";
-import ItemPedido from "./itempedido";
-import { TipoEstacionTrabajo } from "./tipoEstacion";
+import { TipoEstacionTrabajo } from "./constantes/tipoEstacion";
+import ItemPreparacion from "./pedidos/itempreparacion";
 
 export default class EstacionDeTrabajo {
-    private colaDePedidos: Queue<ItemPedido>
-    private tipoEstacion: TipoEstacionTrabajo
+    private colaDePedidos: Queue<ItemPreparacion>;
+    private tipoEstacion: TipoEstacionTrabajo;
 
-    constructor(tipoEstacion: TipoEstacionTrabajo) {
-        this.colaDePedidos = new Queue
-        this.tipoEstacion = tipoEstacion
+    public constructor(tipoEstacion: TipoEstacionTrabajo) {
+        this.colaDePedidos = new Queue<ItemPreparacion>();
+        this.tipoEstacion = tipoEstacion;
     }
 
-    public recibirItem(item: ItemPedido): void {
+    public getTipo(): TipoEstacionTrabajo {
+        return this.tipoEstacion;
+    }
+
+    public getCantidadPendientes(): number {
+        return this.colaDePedidos.size();
+    }
+
+    public recibirItem(item: ItemPreparacion): void {
         if (item.getEstacion() !== this.tipoEstacion) {
-            throw new Error("El item recibido no es preparable en esta estación")
+            throw new Error("El item recibido no es preparable en esta estación.");
         }
         this.colaDePedidos.enqueue(item);
     }
 
-    public prepararSiguiente(): void {
-
+    public prepararSiguiente(): ItemPreparacion {
+        if (this.colaDePedidos.isEmpty()) {
+            throw new Error("No hay items pendientes en la estación.");
+        }
+        const item = this.colaDePedidos.dequeue();
+        item.comenzarPreparacion();
+        return item;
     }
-
 }
