@@ -1,8 +1,7 @@
-import { CERO } from "./constantes/constantes";
+import { CERO } from "../constantes/constantes";
 import { DescuentoCombo } from "./descuentocombo";
 import { Menu } from "./menu";
 
-/** Precio cerrado: no depende de los productos que integran el combo. */
 export class PrecioFijo implements DescuentoCombo {
     private precio: number;
 
@@ -14,7 +13,7 @@ export class PrecioFijo implements DescuentoCombo {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public calcular(_productos: Menu[]): number {
+    public calcular(productos: Menu[]): number {
         return this.precio;
     }
 }

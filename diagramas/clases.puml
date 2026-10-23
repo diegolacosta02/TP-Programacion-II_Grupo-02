@@ -66,11 +66,19 @@ class ItemPedido {
     - cantidad: number
     - estado: EstadoItem
 
+    + getPrecio(): number
+    + estaListo(): boolean
+    + puedeModificarse(): boolean
+    + modificar(): void
+}
+
+class ItemPreparacion {
+    - producto: Producto
+    - cantidad : number
+    - estado: EstadoItem
+
     + comenzarPreparacion(): void
     + marcarListo(): void
-    + modificar(): void
-    + cancelar(): void
-    + getPrecio(): number
 }
 
 enum EstadoItem {
@@ -143,36 +151,50 @@ enum MedioDePago {
     BILLETERA_VIRTUAL
 }
 interface Descuento {
-    + calcular(total: number): number
+    + getNombre(): string
+    + aplica(medioPago: MedioDePago, fecha:Date): boolean
+    + calcular(subtotal: number): number
 }
-class DescuentoEfectivo
-class DescuentoDiaEspecial
-'Relaciones'
+class DescuentoEfectivo {
+    - porcentaje: number
+}
+class DescuentoDiaEspecial {
+    - diaSemana: number
+    - porcentaje: number
+}
+class SinDescuento
 
-PedidoEnSalon -u-|> Pedido
-PedidoDelivery -u-|> Pedido
-PedidoParaRetirar -u-|> Pedido
-ItemPedido -r-* Pedido
-Factura -l-* Pedido
-Factura o-- Descuento
+class SelectorDeDescuento {
+    - descuentos: Descuento[]
+    + elegirMejor(subtotal: number, medioPago: MedioDePago, fecha: Date): Descuento
+}
+
+Pedido <|-u- PedidoEnSalon
+Pedido <|-u- PedidoDelivery
+Pedido <|-u- PedidoParaRetirar
+Pedido *-l- ItemPedido
+Pedido .r.> Factura 
+Pedido --> EstadoPedido
+Pedido ..> SelectorDeDescuento
+Factura <.. Descuento
+
+ItemPedido *-- ItemPreparacion
+ItemPreparacion --> EstadoItem
 
 Combo ..|> TipoDeDescuento
 Combo -u-|> Menu
 Producto -u-|> Menu
+Producto --> Categoria
 
-Efectivo -u-|> MedioDePago
-TarjetaCredito -u-|> MedioDePago
-TarjetaDebito -u-|> MedioDePago
-BilleteraVirtual -u-|> MedioDePago
+Descuento <|.. DescuentoEfectivo
+Descuento <|.. DescuentoDiaEspecial
+Descuento <|.. SinDescuento
 
-Descuento ..|> DescuentoEfectivo
-Descuento ..|> DescuentoDiaEspecial
-
+EstacionDeTrabajo -u-> TipoEstacionTrabajo
 
 Restaurante *-- Menu
 Restaurante *-r- EstacionDeTrabajo
 Restaurante *-- Pedido
 Restaurante o-l- MedioDePago
-Restaurante o-- ItemPedido
 
 @enduml

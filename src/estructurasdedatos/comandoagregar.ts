@@ -1,5 +1,5 @@
 import Comando from "./comando";
-import ItemPedido from "../itempedido";
+import ItemPedido from "../pedidos/itempedido";
 import Stack from "./stack";
 
 export default class ComandoAgregar implements Comando {

@@ -1,23 +1,25 @@
 import { CERO, CIEN } from "../constantes/constantes";
 import Descuento from "./descuento";
-import { MedioDePago } from "./mediodepago";
+import { MedioDePago } from "../constantes/mediodepago";
 
-export default class DescuentoEfectivo implements Descuento {
+export default class DescuentoDiaEspecial implements Descuento {
+    private diaSemana: number;
     private porcentaje: number;
 
-    public constructor(porcentaje: number) {
+    public constructor(diaSemana: number, porcentaje: number) {
         if (porcentaje < CERO || porcentaje > CIEN) {
             throw new Error("El porcentaje debe estar entre 0 y 100.");
         }
+        this.diaSemana = diaSemana;
         this.porcentaje = porcentaje;
     }
 
     public getNombre(): string {
-        return `Descuento por pago en efectivo (${this.porcentaje}%)`;
+        return `Descuento de día especial (${this.porcentaje}%)`;
     }
-// eslint-disable-next-line @typescript-eslint/class-methods-use-this, @typescript-eslint/no-unused-vars
-    public aplica(medioPago: MedioDePago, _fecha: Date): boolean {
-        return medioPago === MedioDePago.EFECTIVO;
+
+    public aplica(_medioPago: MedioDePago, fecha: Date): boolean {
+        return fecha.getDay() === this.diaSemana;
     }
 
     public calcular(subtotal: number): number {

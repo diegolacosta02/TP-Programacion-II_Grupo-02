@@ -1,5 +1,5 @@
-import { CERO } from "./constantes/constantes";
-import { EstadoPedido } from "./constantes/estadopedido";
+import { CERO } from "../constantes/constantes";
+import { EstadoPedido } from "../constantes/estadopedido";
 import Pedido from "./pedido";
 
 export default class PedidoParaRetirar extends Pedido {
@@ -7,7 +7,7 @@ export default class PedidoParaRetirar extends Pedido {
 
     public constructor() {
         super()
-        this.horario = 0
+        this.horario = CERO
     }
 
     // eslint-disable-next-line @typescript-eslint/class-methods-use-this

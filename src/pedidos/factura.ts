@@ -1,6 +1,6 @@
-import Descuento from "./mediosdepago/descuento";
-import { MedioDePago } from "./mediosdepago/mediodepago";
-import SinDescuento from "./mediosdepago/sindescuento";
+import Descuento from "../descuentos/descuento";
+import { MedioDePago } from "../constantes/mediodepago";
+import SelectorDeDescuento from "../descuentos/selectordedescuento";
 
 export default class Factura {
     private detalle: string[]
@@ -17,7 +17,7 @@ export default class Factura {
         this.medioDePago = medioP;
         this.fecha = new Date(fecha);
 
-        this.descuentoAplicado = this.elegirMejor(descuentos)
+        this.descuentoAplicado = new SelectorDeDescuento(descuentos).elegirMejor(subTotal, medioP, this.fecha)
         this.montoDescuento = this.descuentoAplicado.calcular(subTotal);
         this.total = subTotal - this.montoDescuento;
     }
@@ -30,12 +30,21 @@ export default class Factura {
         return this.total;
     }
 
-    private elegirMejor(descuentos: Descuento[]): Descuento {
-        return descuentos.filter(descuento => descuento.aplica(this.medioDePago, this.fecha))
-        .reduce((mejor, actual) =>
-            actual.calcular(this.subTotal) > mejor.calcular(this.subTotal) ? actual : mejor,
-            new SinDescuento()
-        );
+    public getDetalle(): string[] {
+        return this.detalle
     }
 
+    public getSubtotal(): number {
+        return this.subTotal;
+    }
+
+    public getMedioPago(): MedioDePago {
+        return this.medioDePago;
+    }
+
+    public mostrarDetalle(): void {
+        this.detalle.forEach(linea => {
+            console.log(linea)
+        });
+    }
 }

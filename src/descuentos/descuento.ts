@@ -1,4 +1,4 @@
-import { MedioDePago } from "./mediodepago";
+import { MedioDePago } from "../constantes/mediodepago";
 
 
 export default interface Descuento {

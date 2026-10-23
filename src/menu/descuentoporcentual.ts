@@ -1,4 +1,4 @@
-import { CERO, CIEN } from "./constantes/constantes";
+import { CERO, CIEN } from "../constantes/constantes";
 import { DescuentoCombo } from "./descuentocombo";
 import { Menu } from "./menu";
 

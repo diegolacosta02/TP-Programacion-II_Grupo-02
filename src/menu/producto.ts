@@ -1,15 +1,17 @@
-import { Categoria } from "./constantes/categoria";
+import { Categoria } from "../constantes/categoria";
 import { Menu } from "./menu";
-import { TipoEstacionTrabajo } from "./constantes/tipoEstacion";
+import { TipoEstacionTrabajo } from "../constantes/tipoEstacion";
 
 
 export default class Producto extends Menu {
     private categoria: Categoria;
+    private precio: number;
     private tipoEstacion: TipoEstacionTrabajo;
 
     public constructor(nombre: string, categoria: Categoria, precio: number, tipoEstacion: TipoEstacionTrabajo) {
-        super(nombre, precio);
+        super(nombre);
         this.categoria = categoria;
+        this.precio = precio;
         this.tipoEstacion = tipoEstacion;
     }
 
@@ -21,10 +23,11 @@ export default class Producto extends Menu {
         return this.categoria;
     }
 
-    public getEstacionDeTrabajo(nombreProducto: string): TipoEstacionTrabajo {
-        if (nombreProducto != this.nombre) {
-            throw new Error("El nombre del producto no coincide.")
-        }
-        return this.tipoEstacion
+    public getEstacion(): TipoEstacionTrabajo {
+        return this.tipoEstacion;
+    }
+
+    public getProductosSimples(): Producto[] {
+        return [this];
     }
 }
