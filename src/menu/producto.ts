@@ -1,6 +1,7 @@
 import { Categoria } from "../constantes/categoria";
 import { Menu } from "./menu";
 import { TipoEstacionTrabajo } from "../constantes/tipoEstacion";
+import { CERO } from "../constantes/constantes";
 
 
 export default class Producto extends Menu {
@@ -10,6 +11,9 @@ export default class Producto extends Menu {
 
     public constructor(nombre: string, categoria: Categoria, precio: number, tipoEstacion: TipoEstacionTrabajo) {
         super(nombre);
+        if (precio < CERO) {
+            throw new Error("El precio no puede ser negativo.");
+        }
         this.categoria = categoria;
         this.precio = precio;
         this.tipoEstacion = tipoEstacion;
