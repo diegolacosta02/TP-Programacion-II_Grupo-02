@@ -6,7 +6,7 @@ export default class SelectorDeDescuento {
     private descuentos: Descuento[];
 
     public constructor(descuentos: Descuento[]) {
-        this.descuentos = [...descuentos];
+        this.descuentos = descuentos;
     }
 
     public elegirMejor(subtotal: number, medioPago: MedioDePago, fecha: Date): Descuento {

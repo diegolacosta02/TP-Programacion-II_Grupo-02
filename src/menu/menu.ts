@@ -7,11 +7,11 @@ export abstract class Menu {
     this.nombre = nombre;
   }
 
-  public abstract getPrecio(): number;
-
   public getNombre(): string {
     return this.nombre;
   }
+  
+  public abstract getPrecio(): number;
 
   public abstract getProductosSimples(): Producto[]
 
